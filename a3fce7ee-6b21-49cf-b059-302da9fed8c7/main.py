@@ -57,7 +57,8 @@ class TradingStrategy(Strategy):
       return self.data_list
 
    def run(self, data):
-      
+      data = data.loc[self.tickers, "ohlcv"]
+      growth = (data["close"] - data["open"]) / data["open"]
 
       vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
       smavols = SMAVol("VIRT", data["ohlcv"], 30)
