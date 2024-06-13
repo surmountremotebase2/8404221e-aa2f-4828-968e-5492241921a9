@@ -21,7 +21,26 @@ def SMAVol(ticker, data, length):
 
 class TradingStrategy(Strategy):
    def __init__(self):
-      self.tickers = ["VIRT"]
+      groups = [
+         ["MSFT", "AMZN", "GOOG", "META"],
+         ["AMAT", "AMD", "ARM", "ASML", "ASX", "AVGO", "LRCX", "MU", "NVDA", "STM", "TSM"],
+         ["BRK-B", "PRU", "JPM"],
+         ["LLY", "NVO"],
+         ["V", "MA"],
+         ["WMT", "COST"],
+         ['BP', 'CNQ', 'CVX', 'SHEL', 'TTE', 'XOM'],
+         #['CHD', 'CL', 'KMB', 'PG'],
+         #['KO', 'PEP', 'MDLZ'],
+         #['HD', 'LOW'],
+         ['BAC', 'BK', 'C', 'FITB', 'GS', 'HBAN', 'JPM', 'MET', 'MTB', 'PFG', 'PNC', 'PRU', 'STT', 'TFC', 'USB', 'WFC'],
+         ['ADI', 'AMAT', 'ASML', 'ASX', 'AVGO', 'ENTG', 'KLAC', 'LRCX', 'MCHP', 'MRVL', 'NXPI', 'QCOM', 'STM', 'TSM', 'TXN', 'UMC'],
+         ['SAP', 'RELX'],
+         #['TMO', 'DHR', 'A'],
+         #['ABT', 'MDT'],
+         ['HSBC', 'BCS', 'ING', 'DB', 'UBS'],
+         #['PM', 'MO'],
+      ]
+      self.tickers = sum(groups, start=[])
       self.data_list = []
 
    @property
