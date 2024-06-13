@@ -42,6 +42,7 @@ class TradingStrategy(Strategy):
          #['PM', 'MO'],
       ]
       self.tickers = sum(groups, start=[])
+      self.std = pd.read_csv("std.csv")
       self.data_list = []
 
    @property
@@ -59,7 +60,7 @@ class TradingStrategy(Strategy):
    def run(self, data):
       data = data.loc[self.tickers, "ohlcv"]
       growth = (data["close"] - data["open"]) / data["open"]
-      
+
 
       vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
       smavols = SMAVol("VIRT", data["ohlcv"], 30)
