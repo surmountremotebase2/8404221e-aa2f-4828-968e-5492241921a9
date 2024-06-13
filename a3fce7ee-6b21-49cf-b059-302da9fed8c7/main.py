@@ -70,5 +70,5 @@ class TradingStrategy(Strategy):
          is_up = mean > 0 and P_common > 4 * P_seperate
          is_down = mean < 0 and P_common > 4 * P_seperate
          
-      
+         
       return TargetAllocation({"VIRT": min(0.95, (out*5)**(1/3))})
