@@ -43,6 +43,7 @@ class TradingStrategy(Strategy):
       ]
       self.tickers = sum(self.groups, start=[])
       self.std = pd.read_csv("std.csv")
+      self.ticker_weights = pd.Series(np.zeros(len(self.tickers)), self.tickers)
       self.data_list = []
 
    @property
@@ -70,5 +71,10 @@ class TradingStrategy(Strategy):
          is_up = mean > 0 and P_common > 4 * P_seperate
          is_down = mean < 0 and P_common > 4 * P_seperate
          
-         
-      return TargetAllocation({"VIRT": min(0.95, (out*5)**(1/3))})
+         if is_up:
+            weight = np.where(group_growth > std, group_growth, std)
+            self.ticker_weights[group] = weight
+         elif is_down:
+            self.ticker_weights[group] = 0
+
+      return TargetAllocation(self.ticker_weights.to_dict())
