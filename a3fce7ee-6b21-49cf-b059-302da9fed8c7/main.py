@@ -60,27 +60,15 @@ class TradingStrategy(Strategy):
    def run(self, data):
       data = data.loc[self.tickers, "ohlcv"]
       growth = (data["close"] - data["open"]) / data["open"]
-      P_seperate = np.prod(scipy.stats.norm.pdf(growth / self.std.loc))
+      P0 = np.prod(scipy.stats.norm.pdf(growth / self.std.loc))
 
       for group in self.groups:
          group_growth = growth[group]
          mean = np.mean(group_growth)
          P_common = np.prod(scipy.stats.norm.pdf((group_growth - mean) / std.loc[group]))
-         P_seperate_group = P_seperate[group]
-         is_up = mean > 0 and P_common > 4 * P_seperate_group
-         is_down = mean < 0 and P_common > 4 * P_seperate_group
+         P_seperate = P0[group]
+         is_up = mean > 0 and P_common > 4 * P_seperate
+         is_down = mean < 0 and P_common > 4 * P_seperate
          
-
-      vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
-      smavols = SMAVol("VIRT", data["ohlcv"], 30)
-      smavols2 = SMAVol("VIRT", data["ohlcv"], 10)
-
-      if len(vols)<=4:
-            return TargetAllocation({})
-
-      try:
-         if smavols2[-1]/smavols[-1]-1>0:
-               out = smavols2[-1]/smavols[-1]-1
-         else: out = 0
-      except: return None
+      
       return TargetAllocation({"VIRT": min(0.95, (out*5)**(1/3))})
