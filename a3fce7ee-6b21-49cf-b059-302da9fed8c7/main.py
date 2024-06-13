@@ -64,9 +64,12 @@ class TradingStrategy(Strategy):
 
       for group in self.groups:
          group_growth = growth[group]
-         group_mean = np.mean(group_growth)
-         P_common = np.prod(scipy.stats.norm.pdf((group_growth - group_mean) / std.loc[group]))
+         mean = np.mean(group_growth)
+         P_common = np.prod(scipy.stats.norm.pdf((group_growth - mean) / std.loc[group]))
          P_seperate_group = P_seperate[group]
+         is_up = mean > 0 and P_common > 4 * P_seperate_group
+         is_down = mean < 0 and P_common > 4 * P_seperate_group
+         
 
       vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
       smavols = SMAVol("VIRT", data["ohlcv"], 30)
