@@ -77,4 +77,5 @@ class TradingStrategy(Strategy):
          elif is_down:
             self.ticker_weights[group] = 0
 
+      self.ticker_weights /= np.sum(self.ticker_weights)
       return TargetAllocation(self.ticker_weights.to_dict())
