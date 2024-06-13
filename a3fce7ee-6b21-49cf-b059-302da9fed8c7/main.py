@@ -1,7 +1,8 @@
 from surmount.base_class import Strategy, TargetAllocation
 from surmount.logging import log
 from surmount.data import Asset, InstitutionalOwnership
-import pandas_ta as ta
+import numpy as np
+import scipy
 import pandas as pd
 
 def SMAVol(ticker, data, length):
@@ -56,6 +57,8 @@ class TradingStrategy(Strategy):
       return self.data_list
 
    def run(self, data):
+      
+
       vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
       smavols = SMAVol("VIRT", data["ohlcv"], 30)
       smavols2 = SMAVol("VIRT", data["ohlcv"], 10)
