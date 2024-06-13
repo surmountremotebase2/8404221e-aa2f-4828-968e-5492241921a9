@@ -7,8 +7,6 @@ import pandas as pd
 def gaussian(x):
    return np.exp(-x**2 / 2)
 
-std = pd.read_csv("std.csv")
-
 class TradingStrategy(Strategy):
    def __init__(self):
       self.groups = [
@@ -31,7 +29,6 @@ class TradingStrategy(Strategy):
          #['PM', 'MO'],
       ]
       self.tickers = sum(self.groups, start=[])
-      self.std = pd.read_csv("std.csv")
       self.ticker_weights = pd.Series(np.zeros(len(self.tickers)), self.tickers)
       self.data_list = []
 
