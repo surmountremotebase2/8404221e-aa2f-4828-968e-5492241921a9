@@ -22,7 +22,7 @@ def SMAVol(ticker, data, length):
 
 class TradingStrategy(Strategy):
    def __init__(self):
-      groups = [
+      self.groups = [
          ["MSFT", "AMZN", "GOOG", "META"],
          ["AMAT", "AMD", "ARM", "ASML", "ASX", "AVGO", "LRCX", "MU", "NVDA", "STM", "TSM"],
          ["BRK-B", "PRU", "JPM"],
@@ -41,7 +41,7 @@ class TradingStrategy(Strategy):
          ['HSBC', 'BCS', 'ING', 'DB', 'UBS'],
          #['PM', 'MO'],
       ]
-      self.tickers = sum(groups, start=[])
+      self.tickers = sum(self.groups, start=[])
       self.std = pd.read_csv("std.csv")
       self.data_list = []
 
@@ -60,7 +60,13 @@ class TradingStrategy(Strategy):
    def run(self, data):
       data = data.loc[self.tickers, "ohlcv"]
       growth = (data["close"] - data["open"]) / data["open"]
+      P_seperate = np.prod(scipy.stats.norm.pdf(growth / self.std.loc))
 
+      for group in self.groups:
+         group_growth = growth[group]
+         group_mean = np.mean(group_growth)
+         P_common = np.prod(scipy.stats.norm.pdf((group_growth - group_mean) / std.loc[group]))
+         P_seperate_group = P_seperate[group]
 
       vols = [i["VIRT"]["volume"] for i in data["ohlcv"]]
       smavols = SMAVol("VIRT", data["ohlcv"], 30)
