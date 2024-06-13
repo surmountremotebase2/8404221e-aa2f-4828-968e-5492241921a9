@@ -7,6 +7,8 @@ import pandas as pd
 def gaussian(x):
    return np.exp(-x**2 / 2)
 
+std = pd.read_csv("std.csv")
+
 class TradingStrategy(Strategy):
    def __init__(self):
       self.groups = [
